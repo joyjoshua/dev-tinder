@@ -1,0 +1,30 @@
+{
+  "name": "dev-tinder",
+  "version": "1.0.0",
+  "description": "tinder for developers",
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "mongodb",
+    "mongoose"
+  ],
+  "homepage": "https://github.com/joyjoshua/dev-tinder#readme",
+  "bugs": {
+    "url": "https://github.com/joyjoshua/dev-tinder/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joyjoshua/dev-tinder.git"
+  },
+  "license": "ISC",
+  "author": "joyjoshua",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
