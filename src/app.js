@@ -2,23 +2,20 @@ const express = require('express');
 
 const app = express();
 
-app.get("/", (req, res)=> {
-    res.send("Welcome to Dev Tinder");
+app.get("/user", (req, res)=> {
+    //Fetching User list from DB
+    res.send({firstName: 'john', lastName: 'doe'});
 });
 
-/*
-Playing around with express by creating more routes
-
-app.get("/hello", (req, res)=> {
-    res.send("Hello bro");
+app.post("/user", (req, res)=> {
+    //Creating a new user
+    res.send("New User created successfully!");
 });
 
-app.get("/test", (req, res)=> {
-    res.send("Test bro");
+app.delete("/user", (req, res)=> {
+    //Deleting a user
+    res.send("User deleted successfully");
 });
-
-*/
-
 
 app.listen(3000, ()=> {
     console.log('Server is running at PORT 3000');
