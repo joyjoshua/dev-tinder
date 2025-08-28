@@ -1,22 +1,23 @@
 const express = require('express');
-
+const {authAdmin, userAuth} = require('./middlewares/auth')
 const app = express();
 
-app.get("/user", (req, res)=> {
-    //Fetching User list from DB
-    res.send({firstName: 'john', lastName: 'doe'});
+app.use('/admin', authAdmin);
+app.get('/admin/fetchUsers', (req, res) => {
+    res.send('User List is sent successfully')
+});
+app.delete('/admin/deleteUser', (req, res) => {
+    res.send('user deleted successfully');
 });
 
-app.post("/user", (req, res)=> {
-    //Creating a new user
-    res.send("New User created successfully!");
+app.get('/user/fetchUserDetails', userAuth, (req, res) => {
+    res.send('User detail fetched successfully');
 });
 
-app.delete("/user", (req, res)=> {
-    //Deleting a user
-    res.send("User deleted successfully");
+app.post('/user/login', (req, res) => {
+    res.send('User logged in successfully');
 });
 
 app.listen(3000, ()=> {
     console.log('Server is running at PORT 3000');
-});
+}); 
