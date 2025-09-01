@@ -3,17 +3,11 @@ const app = express();
 const {connectDB} = require('./config/database');
 const {User} = require('./models/user');
 
-app.post('/signup', async (req, res) => {
-    const mockUser = {
-        firstName: 'joy',
-        lastName: 'joshua',
-        email: 'joyjoshua@gmail.com',
-        password: 'joy@1234',
-        age: 24,
-        gender: 'M'
-    };
+app.use(express.json());
 
-    const user = new User(mockUser);
+app.post('/signup', async (req, res) => {
+
+    const user = new User(req.body);
 
     try {
         await user.save();
@@ -21,7 +15,68 @@ app.post('/signup', async (req, res) => {
     } catch (err) {
         res.status(400).send('Error while creating an error', err.message);
     }
-})
+});
+
+app.get('/user', async(req, res) => {
+    const userEmail = req.body.email;
+
+    try {
+        const users =  await User.find({email: userEmail});
+        
+        if(users.length === 0) {
+            res.status(404).send('User not found');
+        } else {
+            res.send(users);
+        }
+    } catch (err) {
+        res.status(400).send('Yikes, something went wrong');
+    }
+});
+
+//feed api
+
+app.get("/myFeed", async(req, res) => {
+    try {
+        const myFeed = await User.find({});
+
+        if(myFeed.length === 0) {
+            res.status(404).send("Your feed is empty");
+        } else {
+            res.send(myFeed);
+        }
+    } catch(err) {
+        res.status(400).send('Something went wrong while fetching your feed');
+    }
+});
+
+//delete api
+
+app.delete("/user", async(req, res) => {
+    const userId = req.body.id;
+    try {
+        const user = await User.findByIdAndDelete(userId);
+        res.send('User deleted successfully')
+    } catch(err) {
+        res.status(400).send('Something went wrong while deleting the user');
+    }
+});
+
+//update api
+
+app.patch("/user", async(req, res) => {
+    const data = req.body;
+    try {
+        if(data.id) {
+            const user = await User.findByIdAndUpdate(data.id, data, {returnDocument: 'after'});
+            console.log(user);
+            res.send('user updated successfully');
+        } else {
+            throw  new Error('user not found');
+        }
+    } catch(err) {
+        res.status(400).send('Something went wrong while updating the user');
+    }
+});
 
 connectDB().then(()=> {
     console.log('DB connection established');
